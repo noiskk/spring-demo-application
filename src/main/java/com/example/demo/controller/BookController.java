@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Book;
 import com.example.demo.service.BookService;
+import com.example.demo.service.LoanService; // 추가
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,10 +14,11 @@ import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/")
-@RequiredArgsConstructor   // Lombok: 생성자 주입 자동 생성
+@RequiredArgsConstructor
 public class BookController {
 
     private final BookService bookService;
+    private final LoanService loanService; // 추가된 서비스
 
     /**
      * 1. 도서 목록 페이지
@@ -45,12 +47,17 @@ public class BookController {
     public String reserve(@PathVariable Long id, HttpSession session) {
         String loginUser = (String) session.getAttribute("loginUser");
 
-        // 로그인 여부 확인
         if (loginUser == null) {
             return "redirect:/login";
         }
 
+        // 도서 상태를 '예약됨'으로 변경
         bookService.reserveBook(id);
+
+        // 대출(예약) 내역 데이터 생성 및 저장 (추가)
+        Book book = bookService.getBookDetail(id);
+        loanService.addLoan(loginUser, book);
+
         return "redirect:/book/" + id;
     }
 
@@ -63,14 +70,15 @@ public class BookController {
 
         if (loginUser != null) {
             bookService.cancelReservation(id);
+            // 대출 내역에서도 삭제 (추가)
+            loanService.removeLoan(id);
         }
         return "redirect:/book/" + id;
     }
 
-    // 에러 처리
     @ExceptionHandler(NoSuchElementException.class)
     public String handleNotFound(NoSuchElementException e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
-        return "error/404"; // 에러 전용 HTML 페이지로 이동
+        return "error/404";
     }
 }

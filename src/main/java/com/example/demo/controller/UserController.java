@@ -49,7 +49,7 @@ public class UserController {
     }
 
     // 메인 페이지
-    @GetMapping("/")
+    @GetMapping("/index")
     public String index(HttpSession session) {
         if (session.getAttribute("loginUser") == null) {
             return "redirect:/login";

@@ -7,35 +7,42 @@
 </head>
 <body class="container mt-5">
 
-<div class="card">
+<div class="card shadow-sm">
     <div class="card-header bg-info text-white">
-        <h3>도서 상세 정보</h3>
+        <h3 class="mb-0">도서 상세 정보</h3>
     </div>
     <div class="card-body">
         <p><strong>도서 번호:</strong> <span th:text="${book.id}">1</span></p>
         <p><strong>도서 제목:</strong> <span th:text="${book.title}">제목</span></p>
         <p><strong>저자:</strong> <span th:text="${book.author}">저자</span></p>
         <p><strong>예약 상태:</strong>
-            <span th:if="${book.reserved}" class="text-danger">예약 중</span>
-            <span th:unless="${book.reserved}" class="text-success">예약 가능</span>
+            <span th:if="${book.reserved}" class="badge bg-danger">예약 중</span>
+            <span th:unless="${book.reserved}" class="badge bg-success">예약 가능</span>
         </p>
 
         <hr>
 
         <div th:if="${session.loginUser != null}">
-            <form th:if="${!book.reserved}" th:action="@{/books/{id}/reserve(id=${book.id})}" method="post">
+            <form th:if="${!book.reserved}" th:action="@{/book/{id}/reserve(id=${book.id})}" method="post">
                 <button type="submit" class="btn btn-primary">예약하기</button>
             </form>
-`
-            <button th:if="${book.reserved}"
-                    class="btn btn-secondary" disabled>이미 예약됨</button>
+
+            <div th:if="${book.reserved}" class="d-flex gap-2">
+                <button class="btn btn-secondary" disabled>이미 예약됨</button>
+                <form th:action="@{/book/{id}/cancel(id=${book.id})}" method="post">
+                    <button type="submit" class="btn btn-outline-danger">예약 취소하기</button>
+                </form>
+            </div>
         </div>
 
         <div th:if="${session.loginUser == null}" class="alert alert-warning">
             예약 기능을 이용하려면 로그인이 필요합니다.
         </div>
 
-        <a th:href="@{/books}" class="btn btn-outline-secondary mt-3">목록으로 돌아가기</a>
+        <div class="mt-4">
+            <a th:href="@{/}" class="btn btn-outline-secondary">목록으로 돌아가기</a>
+            <a th:href="@{/loans}" th:if="${session.loginUser != null}" class="btn btn-outline-primary">내 예약 현황 보기</a>
+        </div>
     </div>
 </div>
 
