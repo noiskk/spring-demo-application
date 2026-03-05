@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>도서 대출 서비스</title>
+</head>
+<body>
+
+<h1>도서 대출 서비스</h1>
+<p><span th:text="${session.loginUser}"></span>님 환영합니다! <a
+        href="/logout">로그아웃</a></p>
+
+<ul>
+    <li><a href="/books">도서 목록 조회</a></li>
+    <li><a href="/loans">대출 현황</a></li>
+</ul>
+
+</body>
+</html>
