@@ -18,6 +18,11 @@ public class Member {
     @Column(name = "member_no")
     private String memberNo;    // 회원번호 (PK)
 
+    @Column(name = "login_id", unique = true)
+    private String loginId;     // 로그인 아이디
+
+    private String password;    // 비밀번호
+
     @Column(name = "member_name")
     private String memberName;  // 회원명
 

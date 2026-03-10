@@ -10,6 +10,8 @@ DROP TABLE IF EXISTS member;
 
 CREATE TABLE member (
     member_no       VARCHAR(20)     NOT NULL PRIMARY KEY,
+    login_id        VARCHAR(50)     NOT NULL UNIQUE,
+    password        VARCHAR(100)    NOT NULL,
     member_name     VARCHAR(50)     NOT NULL,
     resident_no     VARCHAR(20)     NOT NULL,
     address         VARCHAR(200),
@@ -60,11 +62,11 @@ CREATE TABLE reservation (
 -- =============================================
 
 -- 회원
-INSERT INTO member VALUES ('M001', '조유진', '900101-1234567', '서울시 강남구', '010-1111-1111', 'kim@test.com', 0);
-INSERT INTO member VALUES ('M002', '김시온', '920305-2345678', '서울시 마포구', '010-2222-2222', 'lee@test.com', 500);
-INSERT INTO member VALUES ('M003', '박주호', '881212-1357924', '경기도 수원시', '010-3333-3333', 'park@test.com', 0);
-INSERT INTO member VALUES ('M004', '남인서', '950820-2468013', '인천시 부평구', '010-4444-4444', 'choi@test.com', 1000);
-INSERT INTO member VALUES ('M005', '유정호', '010101-3579246', '서울시 송파구', '010-5555-5555', 'jung@test.com', 0);
+INSERT INTO member VALUES ('M001', 'user1', '1234', '조유진', '900101-1234567', '서울시 강남구', '010-1111-1111', 'kim@test.com', 0);
+INSERT INTO member VALUES ('M002', 'user2', '1234', '김시온', '920305-2345678', '서울시 마포구', '010-2222-2222', 'lee@test.com', 500);
+INSERT INTO member VALUES ('M003', 'user3', '1234', '박주호', '881212-1357924', '경기도 수원시', '010-3333-3333', 'park@test.com', 0);
+INSERT INTO member VALUES ('M004', 'user4', '1234', '남인서', '950820-2468013', '인천시 부평구', '010-4444-4444', 'choi@test.com', 1000);
+INSERT INTO member VALUES ('M005', 'user5', '1234', '유정호', '010101-3579246', '서울시 송파구', '010-5555-5555', 'jung@test.com', 0);
 
 -- 도서 분류
 INSERT INTO book_category VALUES ('001', '컴퓨터/IT');
