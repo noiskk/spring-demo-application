@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.User;
+import com.example.demo.dto.MemberDto;
 import com.example.demo.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +18,22 @@ public class MemberController {
 
     // 로그인 페이지
     @GetMapping("/login")
-    public String loginPage(){
+    public String loginPage() {
         return "login";
     }
 
     // 로그인 요청
     @PostMapping("/login")
     public String login(
-            @RequestParam("username") String username,
+            @RequestParam("loginId") String loginId,
             @RequestParam("password") String password,
             HttpSession session,
             Model model) {
 
-        User user = memberService.login(username, password);
+        MemberDto member = memberService.login(loginId, password);
 
-        if (user != null) {
-            session.setAttribute("loginUser", user.getUsername());
+        if (member != null) {
+            session.setAttribute("loginUser", member.getMemberName());
             return "redirect:/";
         }
 
@@ -41,7 +41,7 @@ public class MemberController {
         return "login";
     }
 
-    // 로그아웃 페이지
+    // 로그아웃
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
@@ -56,5 +56,4 @@ public class MemberController {
         }
         return "index";
     }
-
 }
