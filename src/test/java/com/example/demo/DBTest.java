@@ -24,7 +24,7 @@ public class DBTest {
                 .setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver")
                 .setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/testdb?serverTimezone=UTC")
                 .setProperty("hibernate.connection.username", "root")
-                .setProperty("hibernate.connection.password", "1234")
+                .setProperty("hibernate.connection.password", "0000")
                 .setProperty("hibernate.hbm2ddl.auto", "none")
                 .setProperty("hibernate.show_sql", "true")
                 .setProperty("hibernate.format_sql", "true")

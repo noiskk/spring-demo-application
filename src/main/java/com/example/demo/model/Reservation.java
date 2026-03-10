@@ -2,7 +2,6 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,21 +15,24 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "reservation_seq") // 설계도의 '예약순번' (PK, int)
+    private int reservationSeq;
 
+    // 설계도: string / rental_no / FK / 대여번호
+    // 실제 객체 지향 설계에서는 Rental 객체를 참조하지만,
+    // 설계도 타입이 string이므로 아래와 같이 작성하거나 Rental 객체와 연결합니다.
+    @Column(name = "rental_no", nullable = false)
+    private String rentalNo;
+
+    // 설계도: string / member_no / FK / 회원번호
+    // Member 엔티티와 연관관계를 맺으면서 컬럼명만 member_no로 지정합니다.
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_no", referencedColumnName = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
-    private Book book;
-
-    @Column(nullable = false)
-    private LocalDateTime reservationDate;
-
-    @Column(nullable = false)
-    private String status; // 예약 상태 (e.g., PENDING, CONFIRMED, CANCELED)
-
-    // TODO: Add other necessary fields (e.g., reservationPeriod, quantity)
+    /* 참고: 만약 설계도대로 아주 단순하게 '문자열' 값만 저장하고 싶다면
+       객체 참조 대신 아래처럼 쓸 수도 있습니다.
+       @Column(name = "member_no")
+       private String memberNo;
+    */
 }
