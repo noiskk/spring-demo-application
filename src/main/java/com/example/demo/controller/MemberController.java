@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.User;
-import com.example.demo.service.UserService;
+import com.example.demo.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
-public class UserController {
+public class MemberController {
 
-    private final UserService userService;
+    private final MemberService memberService;
 
     // 로그인 페이지
     @GetMapping("/login")
@@ -30,7 +30,7 @@ public class UserController {
             HttpSession session,
             Model model) {
 
-        User user = userService.login(username, password);
+        User user = memberService.login(username, password);
 
         if (user != null) {
             session.setAttribute("loginUser", user.getUsername());
