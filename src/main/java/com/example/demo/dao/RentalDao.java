@@ -30,10 +30,9 @@ public class RentalDao {
     }
 
     // 회원번호로 조회
-    // PK 아닌 조건 조회 → JPQL 필수
     public List<Rental> findByMemberNo(String memberNo) {
         return manager.createQuery(
-                        "SELECT r FROM Rental r WHERE r.member_no = :memberNo", Rental.class)
+                        "SELECT r FROM Rental r WHERE r.member.memberNo = :memberNo", Rental.class)
                 .setParameter("memberNo", memberNo)
                 .getResultList();
     }
