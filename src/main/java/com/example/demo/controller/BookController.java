@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Book;
 import com.example.demo.service.BookService;
-import com.example.demo.service.LoanService; // 추가
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,7 +17,6 @@ import java.util.NoSuchElementException;
 public class BookController {
 
     private final BookService bookService;
-    private final LoanService loanService; // 추가된 서비스
 
     /**
      * 1. 도서 목록 페이지
@@ -56,7 +54,6 @@ public class BookController {
 
         // 대출(예약) 내역 데이터 생성 및 저장 (추가)
         Book book = bookService.getBookDetail(id);
-        loanService.addLoan(loginUser, book);
 
         return "redirect:/book/" + id;
     }
@@ -71,7 +68,6 @@ public class BookController {
         if (loginUser != null) {
             bookService.cancelReservation(id);
             // 대출 내역에서도 삭제 (추가)
-            loanService.removeLoan(id);
         }
         return "redirect:/book/" + id;
     }
