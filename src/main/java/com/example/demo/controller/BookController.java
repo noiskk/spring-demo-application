@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Book;
 import com.example.demo.service.BookService;
+import com.example.demo.service.RentalService; // 추가
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import java.util.NoSuchElementException;
 public class BookController {
 
     private final BookService bookService;
+    private final RentalService rentalService; // 추가된 서비스
 
     /**
      * 1. 도서 목록 페이지
@@ -39,7 +41,7 @@ public class BookController {
     }
 
     /**
-     * 3. 도서 예약 처리
+     * 3. 도서 예약 처리 (임시)
      */
     @PostMapping("book/{id}/reserve")
     public String reserve(@PathVariable String id, HttpSession session) {
@@ -50,24 +52,25 @@ public class BookController {
         }
 
         // 도서 상태를 '예약됨'으로 변경
-        bookService.reserveBook(id);
+        // bookService.reserveBook(id); // TODO: Book PK가 String으로 바뀌면 수정
 
-        // 대출(예약) 내역 데이터 생성 및 저장 (추가)
-        Book book = bookService.getBookDetail(id);
+        // 대출 내역 생성 (임시 rentalNo 생성)
+        String rentalNo = "R" + System.currentTimeMillis();
+        rentalService.addRental(rentalNo, id, loginUser);
 
         return "redirect:/book/" + id;
     }
 
     /**
-     * 4. 도서 예약 취소 처리
+     * 4. 도서 예약 취소 처리 (임시)
      */
     @PostMapping("book/{id}/cancel")
-    public String cancel(@PathVariable String id, HttpSession session) {
+    public String cancel(@PathVariable String id, @RequestParam String rentalNo, HttpSession session) {
         String loginUser = (String) session.getAttribute("loginUser");
 
         if (loginUser != null) {
-            bookService.cancelReservation(id);
-            // 대출 내역에서도 삭제 (추가)
+            // bookService.cancelReservation(id); // TODO: Book PK가 String으로 바뀌면 수정
+            rentalService.removeRental(rentalNo);
         }
         return "redirect:/book/" + id;
     }

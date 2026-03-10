@@ -2,31 +2,37 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>내 정보 - 예약 현황</title>
+    <title>내 정보 - 대출 현황</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="container mt-5">
 
-<h2><span th:text="${session.loginUser}"></span>님의 예약 현황</h2>
+<h2><span th:text="${session.loginUser}"></span>님의 대출 현황</h2>
 
 <table class="table table-striped mt-3">
     <thead class="table-dark">
     <tr>
-        <th>번호</th>
-        <th>도서 제목</th>
-        <th>저자</th>
-        <th>예약 일시</th>
+        <th>대여번호</th>
+        <th>도서번호</th>
+        <th>대출일</th>
+        <th>반납일</th>
+        <th>관리</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="loan : ${loans}">
-        <td th:text="${loan.id}">1</td>
-        <td th:text="${loan.book.title}">도서 제목</td>
-        <td th:text="${loan.book.author}">저자명</td>
-        <td th:text="${#temporals.format(loan.loanDate, 'yyyy-MM-dd HH:mm')}">2024-01-01</td>
+    <tr th:each="rental : ${rentals}">
+        <td th:text="${rental.rental_no}">R001</td>
+        <td th:text="${rental.book_no}">B001</td>
+        <td th:text="${rental.rental_date}">2026-03-01</td>
+        <td th:text="${rental.return_date != null ? rental.return_date : '미반납'}">미반납</td>
+        <td>
+            <form th:if="${rental.return_date == null}" th:action="@{/rental/{no}/return(no=${rental.rental_no})}" method="post" style="display:inline">
+                <button type="submit" class="btn btn-sm btn-warning">반납</button>
+            </form>
+        </td>
     </tr>
-    <tr th:if="${#lists.isEmpty(loans)}">
-        <td colspan="4" class="text-center">예약된 도서가 없습니다.</td>
+    <tr th:if="${#lists.isEmpty(rentals)}">
+        <td colspan="5" class="text-center">대출 내역이 없습니다.</td>
     </tr>
     </tbody>
 </table>
