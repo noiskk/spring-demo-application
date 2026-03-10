@@ -2,11 +2,13 @@ package com.example.demo.service;
 
 import com.example.demo.dao.RentalDao;
 import com.example.demo.dto.RentalDto;
+import com.example.demo.model.Member;
 import com.example.demo.model.Rental;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,13 +17,17 @@ public class RentalService {
 
     private final RentalDao rentalDao;
 
+    @PersistenceContext
+    private EntityManager em;
+
     public RentalService(RentalDao rentalDao) {
         this.rentalDao = rentalDao;
     }
 
     // 대출 등록
     public void addRental(String rentalNo, String bookNo, String memberNo) {
-        Rental rental = new Rental(rentalNo, bookNo, memberNo,
+        Member member = em.find(Member.class, memberNo);
+        Rental rental = new Rental(rentalNo, bookNo, member,
                 LocalDate.now(), null, false);
         rentalDao.save(rental);
     }
@@ -32,7 +38,7 @@ public class RentalService {
                 .map(rental -> new RentalDto(
                         rental.getRental_no(),
                         rental.getBook_no(),
-                        rental.getMember_no(),
+                        rental.getMember().getMemberNo(),
                         rental.getRental_date(),
                         rental.getReturn_date(),
                         rental.isExtension()

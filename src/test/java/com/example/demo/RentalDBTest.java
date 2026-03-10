@@ -52,7 +52,7 @@ public class RentalDBTest {
         Rental rental = em.find(Rental.class, "R001");
         System.out.println("rental_no = " + rental.getRental_no());
         System.out.println("book_no = " + rental.getBook_no());
-        System.out.println("member_no = " + rental.getMember_no());
+        System.out.println("member_no = " + rental.getMember());
         System.out.println("rental_date = " + rental.getRental_date());
         assertThat(rental).isNotNull();
         assertThat(rental.getBook_no()).isEqualTo("B001");
@@ -71,7 +71,7 @@ public class RentalDBTest {
 
         Rental found = em.find(Rental.class, "R004");
         assertThat(found).isNotNull();
-        assertThat(found.getMember_no()).isEqualTo("M004");
+        assertThat(found.getMember()).isEqualTo("M004");
     }
 
     @Test
