@@ -17,20 +17,20 @@ public class BookService {
     private final BookDao bookDao;
 
     // 예약 수행
-    public void reserveBook(Long id) {
+    public void reserveBook(String id) {
         bookDao.findById(id).ifPresent(book -> {
             if (!book.isReserved()) {
                 book.setReserved(true);
-                bookDao.update(book);
+                bookDao.save(book); // update 대신 save 사용
             }
         });
     }
 
     // 예약 취소
-    public void cancelReservation(Long id) {
+    public void cancelReservation(String id) {
         bookDao.findById(id).ifPresent(book -> {
             book.setReserved(false);
-            bookDao.update(book);
+            bookDao.save(book); // update 대신 save 사용
         });
     }
 
@@ -38,7 +38,7 @@ public class BookService {
         return bookDao.findAll();
     }
 
-    public Book getBookDetail(Long id) {
+    public Book getBookDetail(String id) {
         return bookDao.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("도서를 찾을 수 없습니다."));
     }

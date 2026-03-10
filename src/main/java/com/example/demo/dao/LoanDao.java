@@ -26,7 +26,7 @@ public class LoanDao {
     }
 
     // 예약 취소 시 내역 삭제
-    public void deleteByBookId(Long bookId) {
+    public void deleteByBookId(String bookId) { // Long -> String으로 변경
         loanDatabase.removeIf(loan -> loan.getBook().getId().equals(bookId));
     }
 }

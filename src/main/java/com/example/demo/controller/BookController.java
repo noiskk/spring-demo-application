@@ -34,7 +34,7 @@ public class BookController {
      * 2. 도서 상세 페이지
      */
     @GetMapping("/book/{id}")
-    public String detail(@PathVariable Long id, Model model) {
+    public String detail(@PathVariable String id, Model model) {
         Book book = bookService.getBookDetail(id);
         model.addAttribute("book", book);
         return "book-detail";
@@ -44,7 +44,7 @@ public class BookController {
      * 3. 도서 예약 처리
      */
     @PostMapping("book/{id}/reserve")
-    public String reserve(@PathVariable Long id, HttpSession session) {
+    public String reserve(@PathVariable String id, HttpSession session) {
         String loginUser = (String) session.getAttribute("loginUser");
 
         if (loginUser == null) {
@@ -65,7 +65,7 @@ public class BookController {
      * 4. 도서 예약 취소 처리
      */
     @PostMapping("book/{id}/cancel")
-    public String cancel(@PathVariable Long id, HttpSession session) {
+    public String cancel(@PathVariable String id, HttpSession session) {
         String loginUser = (String) session.getAttribute("loginUser");
 
         if (loginUser != null) {
